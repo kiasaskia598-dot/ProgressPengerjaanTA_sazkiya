@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Mobil | Admin Sazrent</title>
+    <link rel="stylesheet" href="/static/dashboard.css">
+    <link rel="stylesheet" href="/static/style_sazkiya.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/png" href="/static/img/logo_sazrent.png">
+    
+    <style>
+        /* CSS untuk topmenu aktif dengan warna abu #7c7c7c */
+        .sazkiya-topmenu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .sazkiya-topmenu li {
+            position: relative;
+            margin: 0 15px;
+        }
+
+        .sazkiya-topmenu li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Warna abu saat hover */
+        .sazkiya-topmenu li a:hover {
+            color: #7c7c7c;
+        }
+
+        /* Garis indikator aktif warna abu */
+        .sazkiya-topmenu li a.active {
+            color: #7c7c7c;
+            font-weight: 600;
+        }
+
+        .sazkiya-topmenu li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #7c7c7c;
+            border-radius: 3px;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 2px 4px rgba(124, 124, 124, 0.2);
+        }
+
+        /* Efek garis bawah saat hover dengan warna abu */
+        .sazkiya-topmenu li a:not(.active)::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #7c7c7c;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .sazkiya-topmenu li a:hover:not(.active)::after {
+            width: 100%;
+        }
+
+        @keyframes slideIn {
+            from {
+                width: 0;
+                left: 50%;
+            }
+            to {
+                width: 100%;
+                left: 0;
+            }
+        }
+        
+        /* SEARCH BAR - DI DALAM CARD SAMPING TAMBAH MOBIL */
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type=text] {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+            width: 250px;
+        }
+
+        .search-container button {
+            padding: 8px 15px;
+            background: #7c7c7c;
+            color: white;
+            font-size: 14px;
+            border: 1px solid #7c7c7c;
+            border-left: none;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+            transition: all 0.3s ease;
+        }
+
+        .search-container button:hover {
+            background: #6a6a6a;
+            border-color: #6a6a6a;
+        }
+
+        .search-container input[type=text]:focus {
+            border-color: #7c7c7c;
+            box-shadow: 0 0 0 2px rgba(124, 124, 124, 0.1);
+        }
+
+        @media screen and (max-width: 768px) {
+            .search-container input[type=text] {
+                width: 180px;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .search-container {
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .search-container input[type=text] {
+                width: 100%;
+            }
+        }
+        
+        /* BACKGROUND SAMA SEPERTI PROFIL.HTML */
+        body {
+            background: #f9f9f9 !important;
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .sazkiya-container {
+            background: #f9f9f9 !important;
+        }
+        
+        /* Warna abu untuk efek scroll navbar */
+        .sazkiya-topbar {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        /* Logo styling */
+        .sazkiya-logo-top img {
+            filter: grayscale(30%);
+        }
+        
+        /* Social media icons dengan warna abu */
+        .sazkiya-social a img {
+            transition: all 0.3s ease;
+            filter: grayscale(100%) opacity(0.7);
+        }
+        
+        .sazkiya-social a:hover img {
+            filter: grayscale(0%) opacity(1);
+        }
+        
+        /* Container untuk konten tabel */
+        .data-container {
+            padding: 40px 20px;
+            margin-top: 100px;
+            background: #f9f9f9 !important;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-size: 26px;
+            color: #222;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #2c2c2c;
+            color: #fff;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: center;
+        }
+
+        th {
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tbody tr:hover {
+            background: #f7f7f7;
+        }
+
+        .mobil-img {
+            width: 140px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .mobil-img:hover {
+            transform: scale(1.08);
+        }
+
+        .harga {
+            font-weight: 600;
+            color: #1a7f37;
+        }
+
+        .status-tersedia {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-disewa {
+            color: red;
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            margin: 0 4px;
+            display: inline-block;
+            color: #fff;
+        }
+
+        .btn-edit {
+            background: #0d6efd;
+        }
+
+        .btn-hapus {
+            background: #dc3545;
+        }
+
+        .btn-edit:hover {
+            background: #0b5ed7;
+        }
+
+        .btn-hapus:hover {
+            background: #bb2d3b;
+        }
+
+        .top-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-tambah {
+            background: #7c7c7c;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-tambah:hover {
+            background: #6a6a6a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 124, 124, 0.2);
+        }
+        
+        /* Pesan jika tidak ada hasil search */
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .no-results i {
+            font-size: 40px;
+            color: #ccc;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        /* Reset search button */
+        .btn-reset {
+            background: #888;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 13px;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-reset:hover {
+            background: #666;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sazkiya-topmenu li {
+                margin: 0 8px;
+            }
+            
+            .data-container {
+                margin-top: 120px;
+                padding: 20px 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .mobil-img {
+                width: 100px;
+            }
+            
+            .top-action {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .top-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="sazkiya-container">
+    <div class="sazkiya-topbar" id="navbar">
+        <div class="sazkiya-logo-top">
+            <img src="/static/img/logo_sazkiya.png" alt="Sazrent Logo">
+        </div>
+
+        <ul class="sazkiya-topmenu">
+            <li><a href="/admin">Dashboard</a></li>
+            <li><a href="/profil">Profil</a></li>
+            <li><a href="/admin/mobil" class="active">Mobil</a></li>
+            <li><a href="/admin/motor">Motor</a></li>
+            <li><a href="/testi">Testi</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        
+        <div class="sazkiya-social">
+            <a href="https://instagram.com/sazrentofc" target="_blank"><img src="/static/img/ig.png" alt="Instagram"></a>
+            <a href="https://wa.me/6283194842327" target="_blank"><img src="/static/img/wa.png" alt="WhatsApp"></a>
+        </div>
+    </div>
+
+    <!-- KONTEN TABEL MOBIL -->
+    <div class="data-container">
+        <div class="container">
+            <div class="top-action">
+                <div class="top-left">
+                    <h1>Data Mobil (Admin)</h1>
+                    <!-- SEARCH BAR YANG BISA DIPAKAI -->
+                    <div class="search-container">
+                        <form action="/admin/mobil" method="GET">
+                            <input type="text" placeholder="Search nama mobil..." name="search" 
+                                   value="{{ search_query }}">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                            {% if search_query %}
+                            <a href="/admin/mobil" class="btn-reset">Reset</a>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+                <a href="/admin/tambah_mobil" class="btn-tambah">+ Tambah Mobil</a>
+            </div>
+
+            {% if mobil %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Gambar</th>
+                        <th>Nama Mobil</th>
+                        <th>Harga</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in mobil %}
+                    <tr>
+                        <td>
+                            <img src="{{ url_for('static', filename='img/' + m.gambar) }}" class="mobil-img" 
+                                 onerror="this.src='/static/img/default.jpg'">
+                        </td>
+                        <td>{{ m.nama_mobil }}</td>
+                        <td class="harga">Rp {{ "{:,}".format(m.harga) }}/hari</td>
+                        <td>
+                            {% if m.status == 'Disewa' %}
+                                <b class="status-disewa">Disewa</b>
+                            {% else %}
+                                <b class="status-tersedia">Tersedia</b>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/admin/edit_mobil/{{ m.id }}" class="btn btn-edit">Edit</a>
+                            <a href="/admin/hapus_mobil/{{ m.id }}" class="btn btn-hapus" 
+                               onclick="return confirm('Yakin hapus?')">Hapus</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-results">
+                <i class="fa fa-search"></i>
+                <p>Tidak ada data mobil yang ditemukan{% if search_query %} untuk "{{ search_query }}"{% endif %}.</p>
+                {% if search_query %}
+                <a href="/admin/mobil" class="btn-tambah" style="margin-top: 15px;">Tampilkan Semua Mobil</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+// Fungsi untuk menandai menu aktif berdasarkan URL
+function setActiveMenu() {
+    const currentPath = window.location.pathname;
+    const menuLinks = document.querySelectorAll('.sazkiya-topmenu li a');
+    
+    menuLinks.forEach(link => {
+        // Reset semua menu
+        link.classList.remove('active');
+        
+        // Cek jika URL saat ini cocok dengan href
+        const linkHref = link.getAttribute('href');
+        
+        // Logika untuk menentukan menu aktif
+        if (currentPath === linkHref) {
+            link.classList.add('active');
+        }
+        
+        // Untuk dashboard admin
+        if (currentPath === '/admin' && linkHref === '/admin') {
+            link.classList.add('active');
+        }
+        
+        // Untuk submenu mobil di admin
+        if (currentPath.startsWith('/admin/mobil') && linkHref === '/admin/mobil') {
+            link.classList.add('active');
+        }
+        
+        // Untuk submenu motor di admin
+        if (currentPath.startsWith('/admin/motor') && linkHref === '/admin/motor') {
+            link.classList.add('active');
+        }
+        
+        // Untuk profil
+        if (currentPath.startsWith('/profil') && linkHref === '/profil') {
+            link.classList.add('active');
+        }
+        
+        // Untuk testimoni
+        if (currentPath.startsWith('/testi') && linkHref === '/testi') {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Panggil fungsi saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    setActiveMenu();
+    
+    // Update active menu ketika link diklik
+    document.querySelectorAll('.sazkiya-topmenu li a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Hapus class active dari semua menu
+            document.querySelectorAll('.sazkiya-topmenu li a').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Tambah class active ke menu yang diklik
+            this.classList.add('active');
+            
+            // Simpan ke sessionStorage untuk persistensi
+            sessionStorage.setItem('activeMenu', this.getAttribute('href'));
+            
+            // Simpan juga warna yang digunakan
+            sessionStorage.setItem('menuColor', '#7c7c7c');
+        });
+    });
+    
+    // Navbar scroll effect
+    var prevScrollpos = window.pageYOffset;
+    window.onscroll = function() {
+        var currentScrollPos = window.pageYOffset;
+        if (prevScrollpos > currentScrollPos) {
+            document.getElementById("navbar").style.top = "0";
+        } else {
+            document.getElementById("navbar").style.top = "-90px";
+        }
+        prevScrollpos = currentScrollPos;
+    }
+    
+    // Cek sessionStorage untuk menu aktif sebelumnya
+    const savedActiveMenu = sessionStorage.getItem('activeMenu');
+    const savedMenuColor = sessionStorage.getItem('menuColor');
+    
+    if (savedActiveMenu && savedMenuColor === '#7c7c7c') {
+        const activeLink = document.querySelector(`.sazkiya-topmenu li a[href="${savedActiveMenu}"]`);
+        if (activeLink && !activeLink.classList.contains('active')) {
+            document.querySelectorAll('.sazkiya-topmenu li a').forEach(item => {
+                item.classList.remove('active');
+            });
+            activeLink.classList.add('active');
+        }
+    }
+    
+    // Auto-focus search input jika ada query
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('search')) {
+        document.querySelector('input[name="search"]').focus();
+    }
+});
+</script>
+</body>
+</html>
